@@ -1,7 +1,10 @@
-import Link from "next/link";
+// import Link from "next/link";
 
 export default function About() {
-  return (
+  return <h1>Ini halaman About</h1>;
+
+  /* Praktikum Next.js Pages Router -Tugas Jobsheet 2 -> sebelumnya di file about.js, sekarang diubah menjadi about.tsx */
+  /* return (
     <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
       <h1>Data Mahasiswa</h1>
 
@@ -28,5 +31,5 @@ export default function About() {
         <Link href="/">Back to home</Link>
       </h2>
     </div>
-  );
+  ); */
 }
