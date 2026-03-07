@@ -1,6 +1,6 @@
-import TampilanProduk from "../views/product";
+import TampilanProduk from "../../views/product";
 import useSWR from "swr";
-import fetcher from "../utils/swr/fetcher";
+import fetcher from "../../utils/swr/fetcher";
 
 const kategori = () => {
   // Menggunakan SWR untuk Client-Side data fetching
