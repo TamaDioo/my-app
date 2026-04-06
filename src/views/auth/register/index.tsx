@@ -1,61 +1,122 @@
 import Link from "next/link";
-import styles from "./register.module.css";
+import style from "../../auth/register/register.module.scss";
+import { useState } from "react";
+import { useRouter } from "next/router";
 
 const TampilanRegister = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const { push } = useRouter();
+  const [error, setError] = useState("");
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    setError("");
+    setIsLoading(true);
+    event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(event.currentTarget);
+    const email = formData.get("email") as string;
+    const fullname = formData.get("Fullname") as string;
+    const password = formData.get("password") as string;
+
+    // Validasi email wajib
+    if (!email || email.trim() === "") {
+      setError("Email wajib diisi");
+      setIsLoading(false);
+      return;
+    }
+
+    // Validasi password minimal 6 karakter
+    if (!password || password.length < 6) {
+      setError("Password minimal 6 karakter");
+      setIsLoading(false);
+      return;
+    }
+
+    const response = await fetch("/api/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, fullname, password }),
+    });
+
+    if (response.status === 200) {
+      form.reset();
+      // event.currentTarget.reset();
+      setIsLoading(false);
+      push("/auth/login");
+    } else {
+      setIsLoading(false);
+      setError(
+        response.status === 400 ? "Email already exists" : "An error occurred",
+      );
+    }
+  };
+
   return (
-    <div className={styles.container}>
-      <div className={styles.card}>
-        <h1 className={styles.title}>Register</h1>
-        <p className={styles.subtitle}>Buat akun baru Anda</p>
-
-        <form className={styles.form}>
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Nama Lengkap</label>
-            <input
-              type="text"
-              className={styles.input}
-              placeholder="Masukkan nama lengkap Anda"
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Email</label>
+    <div className={style.register}>
+      {error && <p className={style.register__error}>{error}</p>}
+      <h1 className={style.register__title}>Halaman Register</h1>
+      <div className={style.register__form}>
+        <form onSubmit={handleSubmit}>
+          <div className={style.register__form__item}>
+            <label
+              htmlFor="email"
+              className={style.register__form__item__label}
+            >
+              Email
+            </label>
             <input
               type="email"
-              className={styles.input}
-              placeholder="Masukkan email Anda"
+              id="email"
+              name="email"
+              placeholder="Email"
+              className={style.register__form__item__input}
             />
           </div>
 
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Password</label>
+          <div className={style.register__form__item}>
+            <label
+              htmlFor="Fullname"
+              className={style.register__form__item__label}
+            >
+              Fullname
+            </label>
+            <input
+              type="text"
+              id="Fullname"
+              name="Fullname"
+              placeholder="Fullname"
+              className={style.register__form__item__input}
+            />
+          </div>
+
+          <div className={style.register__form__item}>
+            <label
+              htmlFor="password"
+              className={style.register__form__item__label}
+            >
+              Password
+            </label>
             <input
               type="password"
-              className={styles.input}
-              placeholder="Masukkan password"
+              id="password"
+              name="password"
+              placeholder="Password"
+              className={style.register__form__item__input}
             />
           </div>
-
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Konfirmasi Password</label>
-            <input
-              type="password"
-              className={styles.input}
-              placeholder="Konfirmasi password"
-            />
-          </div>
-
-          <button type="submit" className={styles.button}>
-            Daftar
+          <button
+            type="submit"
+            className={style.register__form__item__button}
+            disabled={isLoading}
+          >
+            {isLoading ? "Loading..." : "Register"}
           </button>
         </form>
-
-        <div className={styles.footer}>
-          Sudah punya akun?{" "}
-          <Link href="/auth/login" className={styles.link}>
-            Login di sini
-          </Link>
-        </div>
+        <br />
+        <p className={style.register__form__item__text}>
+          Sudah punya akun? <Link href="/auth/login">Ke Halaman Login</Link>
+        </p>
       </div>
     </div>
   );
