@@ -8,6 +8,7 @@ import {
   query,
   addDoc,
   where,
+  updateDoc,
 } from "firebase/firestore";
 import app from "./firebase";
 import bcrypt from "bcrypt";
@@ -84,5 +85,48 @@ export async function signUp(
           message: error.message,
         });
       });
+  }
+}
+
+export async function loginWithProvider(userData: any, callback: any) {
+  try {
+    const q = query(
+      collection(db, "users"),
+      where("email", "==", userData.email),
+    );
+    const querySnapshot = await getDocs(q);
+    const data: any = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    // Mengambil nama provider (google atau github) untuk pesan respons yang dinamis
+    const providerName = userData.type || "Provider";
+
+    if (data.length > 0) {
+      // User sudah ada, update data
+      userData.role = data[0].role;
+      await updateDoc(doc(db, "users", data[0].id), userData);
+      callback({
+        status: true,
+        message: `User registered and logged in with ${providerName}`,
+        data: userData,
+      });
+    } else {
+      // User baru, tambah data
+      userData.role = "member";
+      await addDoc(collection(db, "users"), userData);
+      callback({
+        status: true,
+        message: `User registered and logged in with ${providerName}`,
+        data: userData,
+      });
+    }
+  } catch (error: any) {
+    // Tangani error di sini
+    callback({
+      status: false,
+      message: error.message,
+    });
   }
 }

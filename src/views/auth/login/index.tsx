@@ -73,7 +73,6 @@ const TampilanLogin = () => {
                 className={style.login__form__item__input}
               />
             </div>
-
             <div className={style.login__form__item}>
               <label
                 htmlFor="password"
@@ -95,6 +94,24 @@ const TampilanLogin = () => {
               disabled={isLoading}
             >
               {isLoading ? "Loading..." : "Login"}
+            </button>{" "}
+            <br /> <br />
+            <button
+              onClick={() => signIn("google", { callbackUrl, redirect: false })}
+              className={style.login__form__item__button}
+              disabled={isLoading}
+            >
+              {isLoading ? "Loading..." : "Sign in with Google"}
+            </button>
+            <br /> <br />
+            <button
+              type="button"
+              onClick={() => signIn("github", { callbackUrl, redirect: false })}
+              className={style.login__form__item__button}
+              disabled={isLoading}
+              style={{ backgroundColor: "#24292e" }}
+            >
+              {isLoading ? "Loading..." : "Sign in with GitHub"}
             </button>
           </form>
           <br />
