@@ -1,8 +1,10 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import TampilanProduk from "../../views/product";
 import useSWR from "swr";
 import fetcher from "../../utils/swr/fetcher";
+import dynamic from "next/dynamic";
+
+const TampilanProduk = dynamic(() => import("../../views/product"));
 
 const kategori = () => {
   const { push } = useRouter();

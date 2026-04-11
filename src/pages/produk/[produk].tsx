@@ -1,8 +1,10 @@
 import fetcher from "@/utils/swr/fetcher";
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import DetailProduk from "../../views/DetailProduct";
 import { ProductType } from "@/types/Product.type";
+import dynamic from "next/dynamic";
+
+const DetailProduk = dynamic(() => import("../../views/DetailProduct"));
 
 const HalamanProduk = ({ product }: { product: ProductType }) => {
   {

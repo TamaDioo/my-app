@@ -2,6 +2,7 @@ import Head from "next/head";
 import { Poppins } from "next/font/google";
 import styles from "@/styles/404.module.scss";
 import Link from "next/dist/client/link";
+import Image from "next/image";
 
 // Konfigurasi font Poppins
 const poppins = Poppins({
@@ -28,10 +29,12 @@ const Custom404 = () => {
 
         {/* Konten Utama dengan efek Glassmorphism */}
         <div className={styles.error__content}>
-          <img
+          <Image
             src="/page-not-found.png"
             alt="404 Illustration"
             className={styles.error__image}
+            width={400}
+            height={200}
           />
           <h1 className={styles.error__title}>Oops! 404</h1>
           <p className={styles.error__description}>
