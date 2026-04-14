@@ -16,7 +16,8 @@
     "incremental": true,
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "types": ["node", "jest"]
   },
   "include": [
     "next-env.d.ts",
@@ -24,7 +25,11 @@
     "**/*.tsx",
     "src/pages/shop/[[...slug]].tsx",
     "src/pages/shop/[...slug].tsx",
-    "src/pages/category/[slug].js"
+    "src/pages/category/[slug].js",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx"
   ],
   "exclude": ["node_modules"]
 }
